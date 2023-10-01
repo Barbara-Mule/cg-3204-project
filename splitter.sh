@@ -8,9 +8,9 @@ INPUT_DIRECTORY=${INPUT_DIRECTORY:-"dataset"}
 read -p "Enter the output parent directory path (defaults to 'batched_dataset'): " OUTPUT_PARENT_DIRECTORY
 OUTPUT_PARENT_DIRECTORY=${OUTPUT_PARENT_DIRECTORY:-"batched_dataset"}
 
-# Prompt the user for the batch size (defaults to 10)
-read -p "Enter the batch size (defaults to 10): " BATCH_SIZE
-BATCH_SIZE=${BATCH_SIZE:-10}
+# Prompt the user for the batch size (defaults to 13)
+read -p "Enter the batch size (defaults to 13): " BATCH_SIZE
+BATCH_SIZE=${BATCH_SIZE:-13}
 
 # Check if the provided input directory exists
 if [ ! -d "$INPUT_DIRECTORY" ]; then
