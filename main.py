@@ -2,11 +2,12 @@ import os
 import json
 import pandas as pd
 from absl import app, flags
+from concurrent.futures import ThreadPoolExecutor
 
 # Define flags
 FLAGS = flags.FLAGS
-flags.DEFINE_string("input_directory", "", "Path to the input directory")
-flags.DEFINE_string("output_directory", "", "Path to the output directory")
+flags.DEFINE_string("input_directory", "./dataset", "Path to the input directory")
+flags.DEFINE_string("output_directory", "./output", "Path to the output directory")
 
 def extract_english_data(english_file):
     english_data = {}
@@ -53,10 +54,11 @@ def main(argv):
     english_data = extract_english_data(english_file)
 
     # Process translation files for other languages
-    for filename in os.listdir(input_directory):
-        if filename.endswith(".jsonl") and filename != "en-US.jsonl":
-            input_file = os.path.join(input_directory, filename)
-            create_translation_file(english_data, input_file, output_directory)
+    with ThreadPoolExecutor() as executor:
+        for filename in os.listdir(input_directory):
+            if filename.endswith(".jsonl") and filename != "en-US.jsonl":
+                input_file = os.path.join(input_directory, filename)
+                executor.submit(create_translation_file, english_data, input_file, output_directory)
 
 if __name__ == "__main__":
     app.run(main)
