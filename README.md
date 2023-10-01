@@ -18,7 +18,7 @@ Run the `partitions.py` script to generate the partitions.
 python partitions/partitions.py
 ```
 
-#### Question 4
+#### Question 3
 Run the `trainsets.py` script to generate the json file with the translations for the train set partitions.
 ```bash
 python partitions/trainsets.py
