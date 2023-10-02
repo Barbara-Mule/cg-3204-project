@@ -9,6 +9,8 @@ read -p "Enter the path to the parent directory containing batched folders (defa
 PARENT_DIRECTORY=${PARENT_DIRECTORY:-"batched_dataset"}
 
 # Prompt the user for the path to the output directory (defaults to "output")
+# Prompt the user for the path to the output directory (defaults to "output")
+
 read -p "Enter the path to the output directory (defaults to 'output'): " OUTPUT_DIRECTORY
 OUTPUT_DIRECTORY=${OUTPUT_DIRECTORY:-"output"}
 
@@ -17,7 +19,7 @@ if [ ! -f "$MAIN_SCRIPT" ]; then
     echo "'main.py' script '$MAIN_SCRIPT' not found."
     exit 1
 fi
-
+#check if the provided parent directory exists
 # Check if the provided parent directory exists
 if [ ! -d "$PARENT_DIRECTORY" ]; then
     echo "Parent directory '$PARENT_DIRECTORY' does not exist."
