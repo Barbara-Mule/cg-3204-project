@@ -9,6 +9,8 @@ read -p "Enter the path to the parent directory containing batched folders (defa
 PARENT_DIRECTORY=${PARENT_DIRECTORY:-"batched_dataset"}
 
 # Prompt the user for the path to the output directory (defaults to "output")
+# Prompt the user for the path to the output directory (defaults to "output")
+
 read -p "Enter the path to the output directory (defaults to 'output'): " OUTPUT_DIRECTORY
 OUTPUT_DIRECTORY=${OUTPUT_DIRECTORY:-"output"}
 
