@@ -29,7 +29,7 @@ jsonl_files=$(ls "$INPUT_DIRECTORY"/*.jsonl | grep -v "en-US.jsonl")
 # Initialize batch count and batch directory
 batch_count=1
 batch_directory="$OUTPUT_PARENT_DIRECTORY/batch-$batch_count"
-#test1
+# Create the first batch directory
 # Create the first batch directory
 mkdir -p "$batch_directory"
 
