@@ -1,47 +1,42 @@
 import os
-from google.oauth2 import service_account
+from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-# Set your credentials file
-CREDENTIALS_FILE = 'credentials.json'
+# Define the scope for Google Drive (full access)
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
-# Set the local directory containing the files you want to upload
-LOCAL_DIRECTORY = 'output'
+def authenticate_and_upload():
+    # Create or load credentials
+    creds = None
+    if os.path.exists('token.json'):
+        creds = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES).run_local_server(port=0)
+        # Save the credentials for future runs
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
+    else:
+        print("No 'token.json' file found. Please create 'credentials.json' and run this script again.")
+        return
 
-FOLDER_ID = None
+    # Create a Google Drive service
+    service = build('drive', 'v3', credentials=creds)
 
-# Create a Google Drive service
-def create_drive_service():
-    credentials = service_account.Credentials.from_service_account_file(
-        CREDENTIALS_FILE,
-        scopes=['https://www.googleapis.com/auth/drive']
-    )
-    drive_service = build('drive', 'v3', credentials=credentials)
-    return drive_service
+    local_directory = 'output' 
 
-# Upload files from the local directory to Google Drive
-def upload_files_to_drive():
-    drive_service = create_drive_service()
-
-    for filename in os.listdir(LOCAL_DIRECTORY):
-        if os.path.isfile(os.path.join(LOCAL_DIRECTORY, filename)):
-            file_metadata = {
-                'name': filename,
-                'parents': [FOLDER_ID]
-            }
-            media = MediaFileUpload(
-                os.path.join(LOCAL_DIRECTORY, filename),
-                resumable=True
-            )
-
-            uploaded_file = drive_service.files().create(
-                body=file_metadata,
+    # List all files in the local directory
+    for root, dirs, files in os.walk(local_directory):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            
+            # Upload each file to Google Drive
+            media = MediaFileUpload(file_path, resumable=True)
+            file_metadata = {'name': file_name}
+            uploaded_file = service.files().create(
                 media_body=media,
-                fields='id'
+                body=file_metadata,
             ).execute()
 
-            print(f'Uploaded file: {filename}, File ID: {uploaded_file["id"]}')
+            print(f'File uploaded: {uploaded_file["name"]} (ID: {uploaded_file["id"]})')
 
 if __name__ == '__main__':
-    upload_files_to_drive()
+    authenticate_and_upload()
