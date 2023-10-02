@@ -17,7 +17,7 @@ if [ ! -f "$MAIN_SCRIPT" ]; then
     echo "'main.py' script '$MAIN_SCRIPT' not found."
     exit 1
 fi
-
+#check if the provided parent directory exists
 # Check if the provided parent directory exists
 if [ ! -d "$PARENT_DIRECTORY" ]; then
     echo "Parent directory '$PARENT_DIRECTORY' does not exist."
